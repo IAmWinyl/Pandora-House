@@ -1,7 +1,5 @@
 package com.serraabak.pandorahouse;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,7 +24,7 @@ enum ItemType {
 public class Item {
     @Id
     @GeneratedValue
-    private UUID id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -38,17 +36,21 @@ public class Item {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "quantity")
+    private int quantity;
+
     public Item() {
         
     }
 
-    public Item(String name, ItemType type, Double price) {
+    public Item(String name, ItemType type, Double price, int quantity) {
         this.name = name;
         this.type = type;
         this.price = price;
+        this.quantity = quantity;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
@@ -64,7 +66,11 @@ public class Item {
         return price;
     }
 
-    public void setId(UUID id) {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -78,5 +84,9 @@ public class Item {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
