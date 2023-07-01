@@ -2,9 +2,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 
 function Item({ item }) {
+    let imgUrl = imgUrl = "/assets/" + item.imgUrl;
     return (
         <tr>
-            <td><img src={item.imgUrl} /></td>
+            <td><img src={imgUrl} /></td>
             <td>{item.id}</td>
             <td>{item.name}</td>
             <td>{item.type}</td>
@@ -51,7 +52,7 @@ export default function App() {
             .then((items) => {
                 setItems(items);
             });
-        }, [])
+        }, []);
     // if(fetchItemList(itemList) != 200) {
     //     let exampleItem1 = JSON.parse('{"id":"0","name":"Failed","type":0,"price":0.00}');
     //     let exampleItem2 = JSON.parse('{"id":"1","name":"Failed","type":0,"price":0.00}');
