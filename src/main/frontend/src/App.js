@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 function Item({ item }) {
     return (
         <tr>
+            <td><img src={item.imgUrl} /></td>
             <td>{item.id}</td>
             <td>{item.name}</td>
             <td>{item.type}</td>
@@ -21,6 +22,7 @@ function ItemList({ itemList }) {
         <table>
             <tbody>
                 <tr>
+                    <th> </th>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Type</th>

@@ -68,17 +68,33 @@
 	</dependencies>
 
 	<build>
+		<directory>${project.basedir}/target</directory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<addResources>true</addResources>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.9.1</version>
-    
+				<configuration>
+                    <nodeVersion>v8.11.1</nodeVersion>
+                    <npmVersion>5.6.0</npmVersion>
+					<workingDirectory>src/main/frontend</workingDirectory>
+					<installDirectory>target</installDirectory>
+				</configuration>
                 <executions>
                     <execution>
                         <id>install-node-and-npm</id>
@@ -105,12 +121,36 @@
                         </configuration>
                     </execution>
                 </executions>
-                
-                <configuration>
-                    <nodeVersion>v8.11.1</nodeVersion>
-                    <npmVersion>5.6.0</npmVersion>
-                </configuration>
             </plugin>
+			
+			<plugin>
+			<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>WEB-INF/lib/*gson*.jar</packagingExcludes>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target>
+								<copy todir="${project.build.directory}/classes/static">
+									<fileset dir="${project.basedir}/src/main/frontend/build/static" />
+								</copy>
+								<copy todir="${project.build.directory}/classes/static">
+									<fileset dir="${project.basedir}/src/main/frontend/build" />
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		

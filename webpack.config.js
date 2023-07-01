@@ -1,8 +1,10 @@
 const path = require("path")
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var BUILD_DIR = path.resolve(__dirname, 'src/main/frontend/public');
+var APP_DIR = path.resolve(__dirname, 'src/main/frontend/src');
 module.exports = {
-    entry: "./src/main/index.js",
+    entry: APP_DIR + '/index.js',
     mode: 'development',
     module: {
         rules: [
@@ -14,25 +16,17 @@ module.exports = {
             },
         ]
     },
-    devServer: {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-      },
-      port: 9000,
-    },
     resolve: {
         extensions: ['.*', '.js']
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: '/src/main/resources/templates/index.html',
+        template: BUILD_DIR + '/index.html',
         inject: false,
       })
     ],
     output: {
-        path: path.resolve(__dirname, "src/main/resources/templates"),
-        filename: "app/bundle.js"
+        path: BUILD_DIR,
+        filename: "js/bundle.js"
     }
 }

@@ -39,15 +39,19 @@ public class Item {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "imgUrl")
+    private String imgUrl;
+
     public Item() {
         
     }
 
-    public Item(String name, ItemType type, Double price, int quantity) {
+    public Item(String name, ItemType type, Double price, int quantity, String imgUrl) {
         this.name = name;
         this.type = type;
         this.price = price;
         this.quantity = quantity;
+        this.imgUrl = imgUrl;
     }
 
     public long getId() {
@@ -70,6 +74,10 @@ public class Item {
         return quantity;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -88,5 +96,9 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
