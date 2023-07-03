@@ -3,16 +3,17 @@ package com.serraabak.pandorahouse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api")
@@ -20,6 +21,21 @@ public class ItemController {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    private Item getItem(long id) throws Exception {
+        List<Item> itemsFound= itemRepository.findById(id);
+
+        // Error-checking
+        if (itemsFound.size() > 1) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "More than one item with that id.");
+        }
+
+        else if (itemsFound.size() < 1) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found with that id.");
+        }
+
+        return itemsFound.get(0);
+    }
 
     @GetMapping("/items")
     public ResponseEntity<List<Item>> getAllItems() {
@@ -34,69 +50,97 @@ public class ItemController {
             return new ResponseEntity<>(items, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
-    @GetMapping("/prices")
-    public ResponseEntity<List<Item>> getItemsWithPrice() {
-        try {
-            List<Item> items = new ArrayList<Item>();
-
-            itemRepository.findByPrice(1.5).forEach(items::add);
-
-            if (items.isEmpty()) {
-                return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-            }
-            
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/new")
-    public ResponseEntity<Item> createNewItem(@RequestBody Item newItem) {
+    @PostMapping(
+        path = "/addItem",
+        consumes = "application/json",
+        produces = "application/json")
+    public ResponseEntity<Item> addNewItem(@RequestBody Item newItem) {
         try {
             // TODO: validate newItem 
             Item item = itemRepository.save(newItem);
             return new ResponseEntity<Item>(item, HttpStatus.CREATED);
         } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
-    @PostMapping("/buy")
-    public ResponseEntity<Long> buyItem(@RequestBody Map<String, String> jsonRequest) {
+    @PostMapping(
+        path = "/delete/{id}",
+        produces = "application/json")
+    public ResponseEntity<String> deleteItem(@PathVariable("id") long id) {
         try {
-            long itemId = Long.parseLong(jsonRequest.get("id"));
-            int buyQuantity = Integer.parseInt(jsonRequest.get("quantity"));
+            Item item = getItem(id);
 
-            Optional<Item> item_optional = itemRepository.findById(itemId);
+            itemRepository.delete(item);
 
-            if (item_optional.isPresent()) {
-                Item item = item_optional.get();
-                int itemQuantity = item.getQuantity();
+            return new ResponseEntity<String>("Success.", null, 200);
+        } catch (ResponseStatusException rse) {
+            throw rse;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 
-                if (!Utils.willSubtractionOverflow(itemQuantity,buyQuantity) && (itemQuantity - buyQuantity >= 0)) {
-                    item.setQuantity(item.getQuantity()-buyQuantity);
-                    itemRepository.save(item);
-                    return new ResponseEntity<Long>(itemId, HttpStatus.CREATED); 
-                }
-                else {
-                    //System.out.println("Error. Item with ID " + String.valueOf(itemId) + " doesn't have enough units.");
-                    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-                }
+    @PostMapping(
+        path = "/update/{id}",
+        produces = "application/json")
+    public ResponseEntity<Item> updateItem(@PathVariable("id") long id, @RequestBody Map<String, String> jsonRequest) {
+        try {
+            Item item = getItem(id);
+
+            // TODO: Validate these
+            if (jsonRequest.containsKey("name")) {
+                item.setName(jsonRequest.get("name"));
+            }
+            if (jsonRequest.containsKey("type")) {
+                item.setType(jsonRequest.get("type"));
+            }
+            if (jsonRequest.containsKey("price")) {
+                item.setPrice(Double.parseDouble(jsonRequest.get("price")));
+            }
+            if (jsonRequest.containsKey("quantity")) {
+                item.setQuantity(Integer.parseInt(jsonRequest.get("quantity")));
+            }
+            if (jsonRequest.containsKey("imgUrl")) {
+                item.setImgUrl(jsonRequest.get("imgUrl"));
+            }
+
+            itemRepository.save(item);
+
+            return new ResponseEntity<Item>(item, HttpStatus.OK);
+        } catch (ResponseStatusException rse) {
+            throw rse;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+    
+    @PostMapping(
+        path = "/buy/{id}",
+        consumes = "application/json",
+        produces = "application/json")
+    public ResponseEntity<Long> buyItem(@PathVariable("id") long id, @RequestBody int buyQuantity) {
+        try {
+            Item item = getItem(id);
+            int itemQuantity = item.getQuantity();
+
+            if (!Utils.willSubtractionOverflow(itemQuantity,buyQuantity) && (itemQuantity - buyQuantity >= 0)) {
+                item.setQuantity(item.getQuantity()-buyQuantity);
+                itemRepository.save(item);
+                return new ResponseEntity<Long>(id, HttpStatus.OK); 
             }
             else {
-                //System.out.println("Error. Item with ID " + String.valueOf(itemId) + " could not be found.");
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Inventory quantity is insufficient for the request.");
             }
             
+        } catch (ResponseStatusException rse) {
+            throw rse;
         } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

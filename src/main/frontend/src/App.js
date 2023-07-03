@@ -53,11 +53,7 @@ export default function App() {
                 setItems(items);
             });
         }, []);
-    // if(fetchItemList(itemList) != 200) {
-    //     let exampleItem1 = JSON.parse('{"id":"0","name":"Failed","type":0,"price":0.00}');
-    //     let exampleItem2 = JSON.parse('{"id":"1","name":"Failed","type":0,"price":0.00}');
-    //     let exampleList = [exampleItem1,exampleItem2]
-    // }
+        
     return (
         <>
         <ItemList itemList={{ items }} />
