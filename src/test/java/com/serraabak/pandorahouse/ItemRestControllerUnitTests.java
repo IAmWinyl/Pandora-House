@@ -4,9 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +19,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.databind.ObjectMapper; 
+import com.fasterxml.jackson.databind.ObjectWriter; 
 
 @ExtendWith(MockitoExtension.class)
 public class ItemRestControllerUnitTests {
@@ -33,7 +39,7 @@ public class ItemRestControllerUnitTests {
     }
 
     @Test
-    void givenItems_whenGetAllItems_thenReturnItems() throws Exception {
+    void getAllItemsTest() throws Exception {
         // Given
         List<Item> items = new ArrayList<Item>() {{
             add(new Item("example1",ItemType.TSHIRT,100.00,1,"example1.jpg"));
@@ -53,7 +59,7 @@ public class ItemRestControllerUnitTests {
     }
 
     @Test
-    void givenItems_whenAddItem_thenReturnSuccess() throws Exception {
+    void addItemTest() throws Exception {
         // Given
         Item item = new Item("Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
         ResponseEntity<Item> expected = new ResponseEntity<Item>(item, HttpStatus.CREATED);
@@ -65,5 +71,39 @@ public class ItemRestControllerUnitTests {
         // Then
         verify(itemRepository).save(item);
         assertEquals(expected, response);
+    }
+
+    @Test
+    void updateItemTest() throws Exception {
+        // Given
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+        Item oldItem = new Item("Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
+        Item newItem = new Item("New Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
+
+        List<Item> items = new ArrayList<>();
+        items.add(oldItem);
+
+        long exampleId = oldItem.getId();
+        newItem.setId(exampleId);
+        assertEquals(oldItem.getId(), newItem.getId());
+
+        Map<String,String> jsonRequest = new HashMap<>();
+        jsonRequest.put("name","New Test Name");
+
+        ResponseEntity<Item> expected = new ResponseEntity<Item>(newItem, HttpStatus.OK);
+        String jsonExpected = ow.writeValueAsString(expected.getBody());
+
+        // When
+        when(itemRepository.findById(exampleId)).thenReturn(items);
+        when(itemRepository.save(any(Item.class))).thenReturn(newItem);
+
+        ResponseEntity<?> response = itemController.updateItem(exampleId, jsonRequest);
+        String jsonResponse = ow.writeValueAsString(response.getBody());
+        
+        // Then
+        verify(itemRepository).save(any(Item.class));
+        assertEquals(expected.getStatusCode(), response.getStatusCode());
+        assertEquals(jsonExpected, jsonResponse);
     }
 }

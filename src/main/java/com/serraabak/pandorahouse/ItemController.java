@@ -26,7 +26,7 @@ public class ItemController {
     private final ItemRepository itemRepository;
 
     private Item getItem(long id) throws Exception {
-        List<Item> itemsFound= itemRepository.findById(id);
+        List<Item> itemsFound = itemRepository.findById(id);
 
         // Error-checking
         if (itemsFound.size() > 1) {
