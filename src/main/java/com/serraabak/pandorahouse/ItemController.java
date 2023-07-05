@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ItemController {
 
     @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     private Item getItem(long id) throws Exception {
         List<Item> itemsFound= itemRepository.findById(id);
