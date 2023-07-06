@@ -126,6 +126,7 @@ public class ItemRestControllerUnitTests {
         
         // Then
         verify(itemRepository).findById(exampleId);
+        verify(itemRepository).delete(any(Item.class));
         assertEquals(expected, response);
     }
 }
