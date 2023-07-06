@@ -41,7 +41,7 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public ResponseEntity<List<Item>> getAllItems() {
+    public ResponseEntity<List<Item>> listAllItems() {
         try {
             List<Item> items = new ArrayList<Item>();
             itemRepository.findAll().forEach(items::add);

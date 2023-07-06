@@ -38,8 +38,9 @@ public class ItemRestControllerUnitTests {
         itemController = new ItemController(itemRepository);
     }
 
+    // Tests for listAllItems method
     @Test
-    void getAllItemsTest() throws Exception {
+    void givenRepository_whenFindAll_returnItemList_200() throws Exception {
         // Given
         List<Item> items = new ArrayList<Item>() {{
             add(new Item("example1",ItemType.TSHIRT,100.00,1,"example1.jpg"));
@@ -47,19 +48,19 @@ public class ItemRestControllerUnitTests {
             add(new Item("example2",ItemType.SHOES,40.00,3,"example3.jpg"));
         }};
         ResponseEntity<List<Item>> expected = new ResponseEntity<List<Item>>(items, HttpStatus.OK);
-        
 
         // When
         when(itemRepository.findAll()).thenReturn(items);
-        ResponseEntity<?> response = itemController.getAllItems();
+        ResponseEntity<?> response = itemController.listAllItems();
         
         // Then
         verify(itemRepository).findAll();
         assertEquals(expected, response);
     }
 
+    // Tests for addNewItem method
     @Test
-    void addItemTest() throws Exception {
+    void givenItem_whenSave_returnItem_201() throws Exception {
         // Given
         Item item = new Item("Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
         ResponseEntity<Item> expected = new ResponseEntity<Item>(item, HttpStatus.CREATED);
@@ -73,8 +74,9 @@ public class ItemRestControllerUnitTests {
         assertEquals(expected, response);
     }
 
+    // Tests for updateItem method
     @Test
-    void updateItemTest() throws Exception {
+    void givenExistingItemAndNewField_whenSave_returnNewItem_200() throws Exception {
         // Given
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
@@ -108,8 +110,9 @@ public class ItemRestControllerUnitTests {
         assertEquals(jsonExpected, jsonResponse);
     }
 
+    // Tests for deleteItem method
     @Test
-    void deleteItemTest() throws Exception {
+    void givenExistingItem_whenDelete_returnSuccess_200() throws Exception {
         // Given
         Item item = new Item("Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
         long exampleId = 1;
@@ -129,4 +132,5 @@ public class ItemRestControllerUnitTests {
         verify(itemRepository).delete(any(Item.class));
         assertEquals(expected, response);
     }
+    
 }
