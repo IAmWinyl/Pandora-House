@@ -29,11 +29,7 @@ public class ItemController {
         List<Item> itemsFound = itemRepository.findById(id);
 
         // Error-checking
-        if (itemsFound.size() > 1) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "More than one item with that id.");
-        }
-
-        else if (itemsFound.size() < 1) {
+        if (itemsFound.size() < 1) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found with that id.");
         }
 
