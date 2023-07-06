@@ -18,14 +18,14 @@ import org.springframework.web.server.ResponseStatusException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/items")
 @RequiredArgsConstructor
 public class ItemController {
 
     @Autowired
     private final ItemRepository itemRepository;
 
-    private Item getItem(long id) throws Exception {
+    private Item findItem(long id) throws Exception {
         List<Item> itemsFound = itemRepository.findById(id);
 
         // Error-checking
@@ -36,7 +36,7 @@ public class ItemController {
         return itemsFound.get(0);
     }
 
-    @GetMapping("/items")
+    @GetMapping("/list")
     public ResponseEntity<List<Item>> listAllItems() {
         try {
             List<Item> items = new ArrayList<Item>();
@@ -48,13 +48,23 @@ public class ItemController {
 
             return new ResponseEntity<>(items, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println(e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Item> fetchItem(@PathVariable("id") long id) {
+        try {
+            Item item = findItem(id);
+
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
     @PostMapping(
-        path = "/addItem",
+        path = "/add",
         consumes = "application/json",
         produces = "application/json")
     public ResponseEntity<Item> addNewItem(@RequestBody Item newItem) {
@@ -72,7 +82,7 @@ public class ItemController {
         produces = "application/json")
     public ResponseEntity<String> deleteItem(@PathVariable("id") long id) {
         try {
-            Item item = getItem(id);
+            Item item = findItem(id);
 
             itemRepository.delete(item);
 
@@ -89,7 +99,7 @@ public class ItemController {
         produces = "application/json")
     public ResponseEntity<Item> updateItem(@PathVariable("id") long id, @RequestBody Map<String, String> jsonRequest) {
         try {
-            Item item = getItem(id);
+            Item item = findItem(id);
 
             // TODO: Validate these
             if (jsonRequest.containsKey("name")) {
@@ -124,7 +134,7 @@ public class ItemController {
         produces = "application/json")
     public ResponseEntity<Long> buyItem(@PathVariable("id") long id, @RequestBody int buyQuantity) {
         try {
-            Item item = getItem(id);
+            Item item = findItem(id);
             int itemQuantity = item.getQuantity();
 
             if (!Utils.willSubtractionOverflow(itemQuantity,buyQuantity) && (itemQuantity - buyQuantity >= 0)) {
