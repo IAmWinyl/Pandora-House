@@ -80,7 +80,7 @@ public class ItemController {
 
             itemRepository.delete(item);
 
-            return new ResponseEntity<String>("Success.", null, 200);
+            return new ResponseEntity<String>("Success.", HttpStatus.OK);
         } catch (ResponseStatusException rse) {
             throw rse;
         } catch (Exception e) {

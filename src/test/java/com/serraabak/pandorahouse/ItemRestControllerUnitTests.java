@@ -100,10 +100,32 @@ public class ItemRestControllerUnitTests {
 
         ResponseEntity<?> response = itemController.updateItem(exampleId, jsonRequest);
         String jsonResponse = ow.writeValueAsString(response.getBody());
-        
+
         // Then
+        verify(itemRepository).findById(exampleId);
         verify(itemRepository).save(any(Item.class));
         assertEquals(expected.getStatusCode(), response.getStatusCode());
         assertEquals(jsonExpected, jsonResponse);
+    }
+
+    @Test
+    void deleteItemTest() throws Exception {
+        // Given
+        Item item = new Item("Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
+        long exampleId = 1;
+
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+
+        ResponseEntity<String> expected = new ResponseEntity<>("Success.", HttpStatus.OK);
+
+        // When
+        when(itemRepository.findById(exampleId)).thenReturn(items);
+
+        ResponseEntity<?> response = itemController.deleteItem(exampleId);
+        
+        // Then
+        verify(itemRepository).findById(exampleId);
+        assertEquals(expected, response);
     }
 }
