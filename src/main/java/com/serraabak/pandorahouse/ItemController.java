@@ -58,7 +58,9 @@ public class ItemController {
             Item item = findItem(id);
 
             return new ResponseEntity<>(item, HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (ResponseStatusException rse) {
+            throw rse;
+        }  catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

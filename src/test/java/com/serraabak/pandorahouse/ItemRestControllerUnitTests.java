@@ -23,7 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper; 
-import com.fasterxml.jackson.databind.ObjectWriter; 
+import com.fasterxml.jackson.databind.ObjectWriter;
+
+import io.micrometer.core.ipc.http.HttpSender.Response; 
 
 @ExtendWith(MockitoExtension.class)
 public class ItemRestControllerUnitTests {
@@ -74,6 +76,39 @@ public class ItemRestControllerUnitTests {
         verify(itemRepository).findAll();
         assertEquals(expected, response);
     }
+
+    // Tests for fetchItem method
+    @Test
+    void givenExistingId_whenFind_returnItem_200() throws Exception {
+        // Given
+        Item item = new Item("Test Name",ItemType.TSHIRT,100.00,1,"example.jpg");
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+        long exampleId = item.getId();
+        ResponseEntity<Item> expected = new ResponseEntity<>(items.get(0), HttpStatus.OK);
+
+        // When
+        when(itemRepository.findById(exampleId)).thenReturn(items);
+        ResponseEntity<?> response = itemController.fetchItem(exampleId);
+
+        // Then
+        verify(itemRepository).findById(exampleId);
+        assertEquals(expected, response);
+    } 
+
+    @Test
+    void givenNonexistentId_whenFind_throwsException_404() throws Exception {
+         // Given
+
+        // When
+        when(itemRepository.findById(0))
+            .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found with that id."));
+
+        // Then
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,() -> itemController.fetchItem(0));
+        
+        assertEquals("404 NOT_FOUND \"No item found with that id.\"",exception.getMessage());
+    }   
 
     // Tests for addNewItem method
     @Test
@@ -196,18 +231,17 @@ public class ItemRestControllerUnitTests {
     @Test
     void givenNonexistentItem_whenFind_throwsException_404() throws Exception {
         // Given
-        long exampleId = 0;
 
         Map<String,String> jsonRequest = new HashMap<>();
         jsonRequest.put("name","New Test Name");
 
         // When
-        when(itemRepository.findById(exampleId))
+        when(itemRepository.findById(0))
             .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found with that id."));
 
         // Then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,() -> itemController.updateItem(exampleId, jsonRequest));
-        assertEquals("No item found with that id.",exception.getReason());
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,() -> itemController.updateItem(0, jsonRequest));
+        assertEquals("404 NOT_FOUND \"No item found with that id.\"",exception.getMessage());
     }
 
     // Tests for deleteItem method
@@ -236,14 +270,13 @@ public class ItemRestControllerUnitTests {
     @Test
     void givenNonexistentItem_whenDelete_throwsException_404() throws Exception {
         // Given
-        long exampleId = 0;
 
         // When
-        when(itemRepository.findById(exampleId))
+        when(itemRepository.findById(0))
             .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found with that id."));
 
         // Then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,() -> itemController.deleteItem(exampleId));
-        assertEquals("No item found with that id.",exception.getReason());
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,() -> itemController.deleteItem(0));
+        assertEquals("404 NOT_FOUND \"No item found with that id.\"",exception.getMessage());
     }
 }
