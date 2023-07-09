@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Home } from './pages';
 import { Header, Footer, Navbar } from './features';
-import './App.cs';
+import './App.css';
 
 export default function App() {
     return (

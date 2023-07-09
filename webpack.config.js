@@ -14,13 +14,29 @@ module.exports = {
               loader: 'babel-loader',
               options: { presets: ['@babel/preset-env','@babel/preset-react'] },
             },
+            {
+              test: /\.(sass|less|css)$/,
+              use: ['style-loader', 'css-loader', 'less-loader']
+            }, 
+            {
+              test: /\.(png|jpg|gif)$/i,
+              use: [
+                {
+                  loader: 'url-loader',
+                  options: {
+                    limit: 8192,
+                  }
+                }
+              ]
+            }
         ]
     },
     devServer: {
       port: 9000,
     },
     resolve: {
-        extensions: ['.*', '.js']
+        modules: ['.', 'node_modules'],
+        extensions: ['.js', '.jsx']
     },
     plugins: [
       new HtmlWebpackPlugin({
