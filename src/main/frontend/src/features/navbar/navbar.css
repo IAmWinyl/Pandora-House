@@ -1,21 +1,20 @@
-.navbar_container {
-    padding: 0.7rem 15rem;
+.navbar__container {
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #e7e4dc;
-    border: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #c6c4c1;
 }
 
-.navbar_list {
-    display:flex;
+nav {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex: 1;
 }
 
-.navbar_list div {
-    padding: 0.1rem;
+.navbar__list div {
+    padding: 1rem 1rem;
     align-items: center;
     border: black;
 }

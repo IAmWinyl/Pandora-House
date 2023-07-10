@@ -10,10 +10,18 @@ a {
   text-decoration: none;
 }
 
-@media screen and (max-width: 700px) {
+.section__padding {
+  padding: 0rem 4rem;
+}
 
+@media screen and (max-width: 700px) {
+  .section__padding {
+    padding: 0rem 2rem;
+  }
 }
 
 @media screen and (max-width: 550px) {
-
+  .section__padding {
+    padding: 0rem 2rem;
+  }
 }

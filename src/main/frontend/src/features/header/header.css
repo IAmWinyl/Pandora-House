@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600&display=swap');
-
 .header {
     margin: 0 auto;
-    padding: 3rem .5rem .5rem .5rem;
+    padding: 3.5rem 2rem 0.6rem 2rem;
     display: flex;
-    height: 80px;
     align-items: center;
     justify-content: center;
     border: 1px;
@@ -14,10 +11,15 @@
 }
 
 .header__elem {
+    position: relative;
+    min-width: 20%;
+    height: 10px;
     flex: 1;
 }
 
 .header__interactions {
+    min-width: 20%;
+    position: relative;
     flex: 1;
     display: flex;
     justify-content: flex-start;
@@ -25,19 +27,22 @@
 }
 
 .header__logo {
+    position: relative;
     flex: 2;
     text-align: center;
+    min-width: 60%;
 }
 
 .header__logo p {
     font-family: 'Bodoni Moda', serif;
-    font-size: 1.6rem;
+    font-size: 2rem;
     letter-spacing: 4px;
 }
 
 .header__search__bg {
-    min-width: 10rem;
     height: 1.9rem;
+    width: 80%;
+    flex-grow: 1;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 10px;
@@ -67,6 +72,12 @@
     height:100%;
     fill: currentcolor;
 }
+
+.header__search__searchbox {
+    width: 80%;
+
+}
+
 .header__search__searchbox input[type="search"] {
     border: 0px;
 }
@@ -79,12 +90,24 @@
     color: transparent;
 }
 
+.header__cart__svg {
+    position: relative;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:100%;
+    fill:currentcolor;
+}
+
 .header__usericons__cart__container {
+    width: 10%;
     box-sizing: border-box;
     position: relative;
     width: 24px;
     height: 24px;
-    margin-left: 30px;
+    margin-left: 10px;
 }
 
 .header__cart__svg {
@@ -99,6 +122,7 @@
 }
 
 .header__usericons__avatar {
+    width: 10%;
     box-sizing: border-box;
     position: relative;
     width: 35px;

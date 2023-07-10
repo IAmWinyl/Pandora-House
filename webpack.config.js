@@ -19,16 +19,16 @@ module.exports = {
               use: ['style-loader', 'css-loader', 'less-loader']
             }, 
             {
-              test: /\.(png|jpg|gif)$/i,
-              use: [
-                {
-                  loader: 'url-loader',
-                  options: {
-                    limit: 8192,
-                  }
-                }
-              ]
+              test: /\.(png|jpg|webp|gif|svg|mp4)$/,
+              use: [{
+                  loader: 'file-loader'
+              },
+              {
+                  loader: 'webp-loader'
+              }
+    ]
             }
+
         ]
     },
     devServer: {
