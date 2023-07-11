@@ -1,10 +1,49 @@
-# Pandora-House
-Java E-Commerce Application -- Bringing Back the Joyful Art of Shopping
+# Pandora House
+Pandora House is an e-commerce website aimed at brands who want to  build experiences and relationships, and connect directly with shoppers.
 
-Uses:
+- [Pandora House](#pandora-house)
+- [Installation](#installation)
+- [UI](#ui)
+- [Tech Stack](#tech-stack)
+- [Tools Used](#tools-used)
+- [Tracking](#tracking)
+  - [Current features](#current-features)
+  - [Future features](#future-features)
+
+# Installation
+
+
+# UI
+![Home Page Image](docs/assets/home_page_image.png)
+
+# Tech Stack
+* Java
 * Spring Boot
 * React
+* PostgreSQL
+
+# Tools Used
 * Maven
 * Docker/Docker-Compose
 * Webpack
-* PostgreSQL
+* AWS
+
+# Tracking
+Detailed task tracking can be found at my [Trello board](https://trello.com/b/vq6zZiD2/pandora-house)
+
+## Current features
+- 06/26/2023 - Users can list all items (API)
+- 06/27/2023 - Users can add items (API)
+- 06/29/2023 - Users can buy items (API)
+- 07/03/2023 - Users can delete items (API)
+- 07/03/2023 - Users can update items (API)
+- 07/03/2023 - Users can update items (API)
+- 07/05/2023 - All APIs have unit testing
+- 07/09/2023 - Users are greeted by a visually pleasing home page
+- 07/10/2023 - Users can navigate to other pages
+
+## Future features
+- 07/15/2023 - Users can view all items on the shop page
+- 07/16/2023 - Users can sort by price
+- 07/16/2023 - Users can filter by category
+

@@ -33,6 +33,7 @@ module.exports = {
     },
     devServer: {
       port: 9000,
+      historyApiFallback: true
     },
     resolve: {
         modules: ['.', 'node_modules'],
@@ -46,6 +47,7 @@ module.exports = {
     ],
     output: {
         path: BUILD_DIR,
-        filename: "js/bundle.js"
+        filename: "js/bundle.js",
+        publicPath: '/'
     }
 }
