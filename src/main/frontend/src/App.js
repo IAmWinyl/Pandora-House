@@ -1,20 +1,16 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { Routes, Route } from 'react-router-dom';
 
-import { Home } from './pages';
-import { Header, Footer, Navbar } from './features';
+import { Home, Shop } from './pages';
 import './App.css';
+
 
 export default function App() {
     return (
-        <div className="App">
-            <Header />
-            <Navbar />
-            <div className="Content">
-                <Home />
-            </div>
-            <Footer />
-        </div>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+        </Routes>
     )
 }
 

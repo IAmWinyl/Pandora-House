@@ -19,7 +19,7 @@ const Footer = () => {
                     <p>Copyright &copy; 2023</p>
                 </div>
                 <div className="footer__socialmedia">
-                    <a class="footer__instagramlogo" href="#" title="Instagram">
+                    <a className="footer__instagramlogo" href="#" title="Instagram">
                     </a>
                 </div>
             </div>
