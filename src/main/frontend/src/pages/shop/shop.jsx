@@ -1,12 +1,17 @@
 import React from "react";
 import './shop.css';
 
+import { Header, Footer, Navbar } from '../../features';
+
 
 const Shop = () => {
     return (
-        <div>
+        <>
+            <Header />
+            <Navbar />
             Shop
-        </div>
+            <Footer />
+        </>
     )
 }
 

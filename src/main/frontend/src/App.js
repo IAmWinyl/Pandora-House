@@ -8,8 +8,8 @@ import './App.css';
 export default function App() {
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/shop" element={<Shop />} />
         </Routes>
     )
 }
