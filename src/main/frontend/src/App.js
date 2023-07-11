@@ -1,15 +1,16 @@
 import React from "react";
 import { Routes, Route } from 'react-router-dom';
 
-import { Home, Shop } from './pages';
+import { Home, Shop, NoMatch } from './pages';
 import './App.css';
 
 
 export default function App() {
     return (
         <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/shop" element={<Shop />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="*" element={<NoMatch />} />
         </Routes>
     )
 }
