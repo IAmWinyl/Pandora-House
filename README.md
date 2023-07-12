@@ -11,7 +11,13 @@ Pandora House is an e-commerce website aimed at brands who want to  build experi
   - [Future features](#future-features)
 
 # Installation
+The website is not currently being hosted, however it is available through Docker Hub.
+You'll need Docker already installed for this.
 
+1. Run docker pull winyl/pandora_house
+2. Run docker-compose up
+  
+This will run the application on 127.0.0.1:8081
 
 # UI
 ![Home Page Image](docs/assets/home_page_image.png)
