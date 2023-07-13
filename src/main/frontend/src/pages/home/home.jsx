@@ -1,6 +1,6 @@
-import React from "react";
-import { Header, Footer, Navbar } from '../../features';
+import React, { Component } from "react";
 import './home.css';
+import { Outlet } from 'react-router-dom';
 
 
 import front_page_img from 'assets/frontpage.png';
@@ -8,11 +8,9 @@ import runway1 from 'assets/runway1.webp';
 import runway2 from 'assets/runway2.webp';
 import runway3 from 'assets/runway3.webp';
 
-const Home = () => {
-    return (
-        <>
-            <Header />
-            <Navbar />
+export default class Home extends Component {
+    render () {
+        return (
             <div className="home">
                 <div className="featuredcontent">
                     <div className="featuredcontent__image">
@@ -32,11 +30,9 @@ const Home = () => {
                         <img src={runway3} />
                     </div>
                     <a href="/"><p>Discover the new collection</p></a>
+                    <Outlet />
                 </div>
             </div>
-            <Footer />
-        </>
-    )
+        )
+    }
 }
-
-export default Home

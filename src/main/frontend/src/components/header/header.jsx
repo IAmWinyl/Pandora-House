@@ -1,5 +1,6 @@
 import React from "react";
 import './header.css';
+import { Link } from 'react-router-dom';
 
 
 const Header = () => {
@@ -7,7 +8,7 @@ const Header = () => {
         <div className="header">
             <div className="header__elem"></div>
             <div className="header__logo">
-                <p>PANDORA HOUSE</p>
+                <p><Link to='/'>PANDORA HOUSE</Link></p>
             </div>
             <div className="header__interactions">
                 <div className="header__search__bg">

@@ -20,15 +20,20 @@ module.exports = {
             }, 
             {
               test: /\.(png|jpg|webp|gif|svg|mp4)$/,
-              use: [{
+              use: [
+                {
                   loader: 'file-loader'
-              },
-              {
-                  loader: 'webp-loader'
-              }
-    ]
-            }
-
+                },
+                {
+                    loader: 'webp-loader'
+                }
+              ]
+            },
+            {
+              test: /\.js$/,
+              enforce: "pre",
+              use: ["source-map-loader"],
+            },
         ]
     },
     devServer: {
