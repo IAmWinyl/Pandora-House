@@ -10,18 +10,34 @@ a {
   text-decoration: none;
 }
 
-.section__padding {
+.layout__padding {
   padding: 0rem 4rem;
 }
 
 @media screen and (max-width: 700px) {
-  .section__padding {
+  .layout__padding {
     padding: 0rem 2rem;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .section__padding {
+  .layout__padding {
     padding: 0rem 2rem;
+  }
+}
+
+.section__padding {
+  padding: 3rem 4rem;
+}
+
+@media screen and (max-width: 700px) {
+  .section__padding {
+    padding: 2rem 2rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .section__padding {
+    padding: 2rem 2rem;
   }
 }

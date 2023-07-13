@@ -1,0 +1,32 @@
+img {
+    padding: 15px;
+    height: 300px;
+    width: 143px;
+}
+
+.shop {
+}
+
+.shop__content {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.shop__sidebar {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 15px 40px 15px 0px;
+}
+
+.list li:hover {
+    text-decoration: underline;
+}
+.list ul {
+    margin-top: 5px;
+}
+
+.list h4 {
+    margin-top: 10px;
+}

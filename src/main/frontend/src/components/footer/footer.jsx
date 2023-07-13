@@ -4,7 +4,7 @@ import './footer.css';
 
 const Footer = () => {
     return (
-        <div className="footer section__padding">
+        <div className="footer layout__padding">
             <div className="footer__nav">
                 <ul>
                     <li>About</li>

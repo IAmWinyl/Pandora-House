@@ -5,7 +5,7 @@ import './navbar.css';
 
 const Navbar = () => {
     return (
-        <div className="navbar__container section__padding">
+        <div className="navbar__container layout__padding">
             <div className="navbar__list">
                 <nav>
                     <div><Link to='/'>New</Link></div>
