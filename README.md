@@ -47,9 +47,10 @@ Detailed task tracking can be found at my [Trello board](https://trello.com/b/vq
 - 07/05/2023 - All APIs have unit testing
 - 07/09/2023 - Users are greeted by a visually pleasing home page
 - 07/10/2023 - Users can navigate to other pages
+- 07/17/2023 - Users can view all items on the shop page
 
 ## Future features
-- 07/15/2023 - Users can view all items on the shop page
-- 07/16/2023 - Users can sort by price
-- 07/16/2023 - Users can filter by category
+
+- Users can sort by price
+- Users can filter by category
 
