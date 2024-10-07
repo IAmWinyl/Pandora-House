@@ -16,11 +16,6 @@ You'll need Docker already installed for this.
 
 1. Run docker pull winyl/pandora_house
 2. Run docker-compose up
-  
-This will run the application on 127.0.0.1:8081
-
-# UI
-![Home Page Image](docs/assets/home_page_image.png)
 
 # Tech Stack
 * Java
